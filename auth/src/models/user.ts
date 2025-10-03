@@ -17,7 +17,7 @@ interface UserModel extends mongoose.Model<UserDoc>{
 // typescript also recognises createdat updatedat etc
 interface UserDoc extends mongoose.Document{
     email:string,
-    password:string
+    password?:string
 }
 
 const userSchema = new mongoose.Schema({
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   }, 
   password: {
-    type: String,
+    type: String, 
     required: true,
   },
 });
