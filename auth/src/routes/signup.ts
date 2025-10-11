@@ -1,11 +1,11 @@
 import express,{Request,Response} from "express"
 import {body,validationResult} from 'express-validator'
 import { User } from "../models/user";
-import { RequestValidationError } from "../errors/request-validation-error";
-import { DatabaseConnectionError } from "../errors/DatabaseConnectionError";
-import { BadRequesterror } from "../errors/bad-requet-error";
+import { RequestValidationError } from "@beltawnticket/common";
+import { DatabaseConnectionError } from "@beltawnticket/common";
+import { BadRequesterror } from "@beltawnticket/common";
 import jwt from 'jsonwebtoken'
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest } from "@beltawnticket/common";
 
 const router=express.Router();
 

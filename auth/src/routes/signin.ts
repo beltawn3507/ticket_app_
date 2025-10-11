@@ -1,9 +1,9 @@
 import express, { Request, Response } from "express";
-import { RequestValidationError } from "../errors/request-validation-error";
+import { RequestValidationError } from "@beltawnticket/common";
 import { body, validationResult } from "express-validator";
-import { validateRequest } from "../middlewares/validate-request";
+import { validateRequest } from "@beltawnticket/common";
 import { User } from "../models/user";
-import { BadRequesterror } from "../errors/bad-requet-error";
+import { BadRequesterror } from "@beltawnticket/common";
 import { Password } from "../services/password";
 import  jwt  from 'jsonwebtoken';
 
