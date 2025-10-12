@@ -40,8 +40,8 @@ userSchema.pre('save',async function(done){
 });
 
 // to create new user we will use User.build
+// whenever we create new user it does not apply type checking
 userSchema.statics.build = (attrs: UserAttrs) => {
-
   return new User(attrs);
 };
 
