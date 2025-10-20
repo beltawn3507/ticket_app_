@@ -10,23 +10,27 @@ declare global {
 
 let mongo: any;
 
+// before all the test perform this
 beforeAll(async () => {
   process.env.JWT_KEY = "ffdfd";
+  // create a mongomemory server and get uri of the server
   mongo = await MongoMemoryServer.create();
   const mongoUri = mongo.getUri();
   await mongoose.connect(mongoUri, {});
 });
 
+// before each task perform this
 beforeEach(async () => {
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db.collections();
-
+    // for all the collection erase all the data
     for (let collection of collections) {
       await collection.deleteMany({});
     }
   }
 });
 
+// after all test delete all the mongo data
 afterAll(async () => {
   if (mongo) {
     await mongo.stop();
@@ -35,6 +39,8 @@ afterAll(async () => {
 });
 
 
+// function to simulate fake login in the server
+// this function return the cookie 
 global.signin = async ()=>{
   const email = 'random2@gmail.com'
   const password = 'password';

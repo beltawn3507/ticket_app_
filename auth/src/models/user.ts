@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { Password } from "../services/password";
+
 // an interface that describes the props to create new user
 interface UserAttrs {
   email: string;
@@ -20,6 +21,7 @@ interface UserDoc extends mongoose.Document{
     password?:string
 }
 
+// mongoos defintion of the type of data
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -31,6 +33,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// 
 userSchema.pre('save',async function(done){
   if(this.isModified('password')){
     const hashed = await Password.toHash(this.get('password'));
