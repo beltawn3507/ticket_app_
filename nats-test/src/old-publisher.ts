@@ -1,13 +1,13 @@
 import nats,{Message} from 'node-nats-streaming'
-import { TicketCreatedPublisher } from './events/ticket-created-publisher';
 
 console.clear()
 
+// creation of the nats client
 const stan = nats.connect('ticketing','abc',{
     url:'http://localhost:4222'
 });
-
-
+ 
+// on coonnection of the client to the server
 stan.on('connect',()=>{
     console.log('publisher connected to nats');
     
@@ -16,14 +16,11 @@ stan.on('connect',()=>{
         title:"Concert",
         price: 20
     });
-  
-    const publisher = new TicketCreatedPublisher(stan);
-
-    publisher.publish({
-        id:'dadasa',
-        title:'concert',
-        price:89
-    })
+     
+    // publish the data on connection to the nats-server
+    stan.publish('ticket:created',data,()=>{
+        console.log('event published')
+    });
               
 });
 
