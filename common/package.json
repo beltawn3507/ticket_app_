@@ -1,6 +1,6 @@
 {
   "name": "@beltawnticket/common",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -24,7 +24,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@beltawnticket/common": "^1.0.9",
+    "@beltawnticket/common": "^1.0.10",
     "@types/cookie-session": "^2.0.49",
     "@types/jsonwebtoken": "^9.0.10",
     "cookie-session": "^2.1.1",
