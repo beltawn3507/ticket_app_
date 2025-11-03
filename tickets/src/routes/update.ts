@@ -2,6 +2,8 @@ import express,{Request,Response} from 'express'
 import {body} from 'express-validator'
 import { NotAuthorisedError, NotFoundError, requireAuth , validateRequest} from '@beltawnticket/common'
 import { Ticket } from '../models/ticket';
+import { TicketUpadatedPublisher } from '../events/publishers/ticket-updated-publisher';
+import { natsWrapper } from '../nats-wrapper';
 
 
 const router = express.Router();
@@ -33,6 +35,13 @@ router.put('/api/tickets/:id',requireAuth,
         price
     })
     await ticket.save();
+
+    new TicketUpadatedPublisher(natsWrapper.client).publish({
+        id:ticket.id,
+        title:ticket.title,
+        price:ticket.price,
+        userId:ticket.userId
+    })
 
     res.send(ticket);
 })

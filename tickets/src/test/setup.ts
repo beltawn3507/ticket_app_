@@ -8,6 +8,8 @@ declare global {
       var signin: () => Promise<string[]>;
     }
 
+jest.mock('../nats-wrapper');
+
 let mongo: any;
 
 // before all tests create mongomemory server and then connect the 
