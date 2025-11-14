@@ -1,7 +1,7 @@
 import nats, { Stan } from "node-nats-streaming";
 
 
-// this class create obejct like monodb 
+// this class create obejct like mongodb 
 class NatsWrapper {
   private _client?: Stan;
 
