@@ -26,6 +26,7 @@ router.delete('/api/orders/:orderId',requireAuth,async(req:Request,res:Response)
     // publishing an event saying order cancelled
     new OrderCancelledPublisher(natsWrapper.client).publish({
         id:order.id,
+        version:order.version,
         ticket:{
            id:  order.ticket.id
         }
