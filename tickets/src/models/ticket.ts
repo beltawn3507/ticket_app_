@@ -14,6 +14,7 @@ interface TicketDoc extends mongoose.Document {
     userId: string;
     id: string;
     version:number;
+    orderId?: string;
 }
 
 

@@ -1,6 +1,6 @@
 import express,{Request,Response} from 'express'
 import {body} from 'express-validator'
-import { NotAuthorisedError, NotFoundError, requireAuth , validateRequest} from '@beltawnticket/common'
+import { BadRequesterror, NotAuthorisedError, NotFoundError, requireAuth , validateRequest} from '@beltawnticket/common'
 import { Ticket } from '../models/ticket';
 import { TicketUpadatedPublisher } from '../events/publishers/ticket-updated-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -24,6 +24,10 @@ router.put('/api/tickets/:id',requireAuth,
     if(!ticket){
         throw new NotFoundError()
     }    
+
+    if (ticket.orderId) {
+      throw new BadRequesterror('Cannot edit a reserved ticket');
+    }
 
     if(ticket.userId !== req.currentUser!.id){
         throw new NotAuthorisedError()
