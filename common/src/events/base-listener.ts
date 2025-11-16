@@ -15,7 +15,7 @@ export abstract class Listener<T extends Event>{
    abstract subject: T['subject'];
    abstract queueGroupname: string;
    abstract onMessage(data:T['data'],msg:Message):void;
-   private client:Stan; 
+   protected client:Stan; 
    protected ackwait = 5*1000;
 
   //  constructor of the object
