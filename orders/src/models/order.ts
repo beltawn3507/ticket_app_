@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { OrderStatus } from "@beltawnticket/common";
 import { TicketDoc } from "./ticket";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 interface OrderAttrs {
   userId: string;
@@ -15,6 +16,7 @@ interface OrderModel extends mongoose.Model<OrderDoc>{
 
 
 interface OrderDoc extends mongoose.Document{
+    id:string,
     userId: string;
     status: OrderStatus;
     expiresAt:Date;
@@ -47,6 +49,9 @@ const orderSchema = new mongoose.Schema({
         }
     }
 });
+
+orderSchema.set('versionKey', 'version');
+orderSchema.plugin(updateIfCurrentPlugin);
 
 // we are defining a new function build which will take value 
 // of type OrderAttrs and create new mongodb 
