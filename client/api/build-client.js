@@ -1,19 +1,21 @@
-import axios from 'axios';
+import axios from "axios";
 
 export default ({ req }) => {
-  if (typeof window === 'undefined') {
-    // We are on the server
+  if (typeof window === "undefined") {
+    //  we are on the server (!browser)
 
     return axios.create({
       baseURL:
-        'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local',
+        "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local",
       headers: req.headers,
     });
   } else {
-    // We must be on the browser
+    //  we are on the browser
     return axios.create({
-      baseUrl: '/',
+      //we do not need to include any headers because the browser is going to take care of all that stuff
+      baseURL: "/",
     });
   }
 };
- 
+
+//RQ: we are using headers (to transfer cookies (sent by the client))

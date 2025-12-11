@@ -1,48 +1,55 @@
-import { useState, useEffect } from 'react';
-import Router from 'next/router';
-import useRequest from '../../hooks/use-request';
+import React, { useState } from "react";
+import useRequest from "../../hooks/use-request";
+import Router from "next/router";
 
-export default () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const signup = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { doRequest, errors } = useRequest({
-    url: '/api/users/signin',
-    method: 'post',
+    url: "/api/users/signin",
+    method: "post",
     body: {
       email,
-      password
+      password,
     },
-    onSuccess: () => Router.push('/')
+    onSuccess: () => Router.push("/"),
   });
-
-  const onSubmit = async event => {
-    event.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
 
     await doRequest();
   };
-
   return (
     <form onSubmit={onSubmit}>
       <h1>Sign In</h1>
       <div className="form-group">
-        <label>Email Address</label>
+        <label htmlFor="exampleInputEmail1">Email address</label>
         <input
+          type="email"
           value={email}
-          onChange={e => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value)}
           className="form-control"
+          id="exampleInputEmail1"
+          placeholder="Enter email"
         />
       </div>
       <div className="form-group">
-        <label>Password</label>
+        <label htmlFor="exampleInputPassword1">Password</label>
         <input
-          value={password}
-          onChange={e => setPassword(e.target.value)}
           type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          id="exampleInputPassword1"
+          placeholder="Password"
           className="form-control"
         />
       </div>
+      <button type="submit" className="btn btn-primary">
+        Sign In
+      </button>
       {errors}
-      <button className="btn btn-primary">Sign In</button>
     </form>
   );
 };
+
+export default signup;
