@@ -56,7 +56,9 @@ jobs:
           cd ticket_app_cd/auth
 
           # Update only the image tag (Kustomize-safe)
-          sed -i "s|\(name: ${IMAGE_NAME}\n\s*newTag:\).*|\1 ${IMAGE_TAG}|" kustomization.yaml
+          # sed -i "s|\(name: ${IMAGE_NAME}\n\s*newTag:\).*|\1 ${IMAGE_TAG}|" kustomization.yaml
+          sed -i "s|newTag: .*|newTag: ${IMAGE_TAG}|" kustomization.yaml
+
 
           # Exit if nothing changed
           if git diff --quiet; then
