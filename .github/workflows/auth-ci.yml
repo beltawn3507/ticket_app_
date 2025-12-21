@@ -43,7 +43,7 @@ jobs:
 
       - name: Update auth image tag in ticket_app_cd
         env:
-          GITOPS_PAT: ${{ secrets.CR_PAT }}
+          CR_PAT: ${{ secrets.CR_PAT }}
           IMAGE_TAG: ${{ github.sha }}
           IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/auth
         run: |
