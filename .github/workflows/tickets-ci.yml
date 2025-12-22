@@ -40,3 +40,32 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/tickets:${{ github.sha }}
+
+      - name: Update auth image tag in ticket_app_cd
+        env:
+          CR_PAT: ${{ secrets.CR_PAT }}
+          IMAGE_TAG: ${{ github.sha }}
+          IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/tickets
+        run: |
+          set -e
+
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+
+          git clone https://${CR_PAT}@github.com/beltawn3507/ticket_app_cd.git
+          cd ticket_app_cd/tickets
+
+          # Update only the image tag (Kustomize-safe)
+          # sed -i "s|\(name: ${IMAGE_NAME}\n\s*newTag:\).*|\1 ${IMAGE_TAG}|" kustomization.yaml
+          sed -i "s|newTag: .*|newTag: ${IMAGE_TAG}|" kustomization.yaml
+
+
+          # Exit if nothing changed
+          if git diff --quiet; then
+            echo "No image tag change detected. Skipping commit."
+            exit 0
+          fi
+
+          git add kustomization.yaml
+          git commit -m "tickets: update image tag to ${IMAGE_TAG}"
+          git push origin main
