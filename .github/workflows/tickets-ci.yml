@@ -11,7 +11,7 @@ on:
       - "tickets/**"
 
 jobs:
-  build-and-push-auth:
+  build-and-push-ticket:
     runs-on: ubuntu-latest
 
     permissions:

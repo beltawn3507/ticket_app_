@@ -13,7 +13,6 @@ on:
 jobs:
   build-and-push-auth:
     runs-on: ubuntu-latest
-
     permissions:
       contents: read
       packages: write
@@ -45,7 +44,7 @@ jobs:
         env:
           CR_PAT: ${{ secrets.CR_PAT }}
           IMAGE_TAG: ${{ github.sha }}
-          IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/auth
+          IMAGE_NAME: ghcr.io/${{ github.repository_owner }}/orders
         run: |
           set -e
 
