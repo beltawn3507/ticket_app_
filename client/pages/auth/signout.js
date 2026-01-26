@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import useRequest from "../../hooks/use-request";
-import Router  from "next/router";
+import Router from "next/router";
 
-const signout = () => {
+const Signout = () => {
   const { doRequest } = useRequest({
     url: "/api/users/signout",
     method: "post",
@@ -13,7 +13,17 @@ const signout = () => {
   useEffect(() => {
     doRequest();
   }, []);
-  return <div>Signing you out ...</div>
+
+  return (
+    <div className="d-flex flex-column justify-content-center align-items-center min-vh-100">
+      
+      <div className="spinner-border text-primary mb-3" role="status" />
+
+      <h4>Signing you out...</h4>
+      <p className="text-muted">Please wait</p>
+
+    </div>
+  );
 };
 
-export default signout;
+export default Signout;

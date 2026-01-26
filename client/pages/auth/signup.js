@@ -1,55 +1,71 @@
 import React, { useState } from "react";
 import useRequest from "../../hooks/use-request";
 import Router from "next/router";
+import Link from "next/link";
 
-const signup = () => {
+const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const { doRequest, errors } = useRequest({
     url: "/api/users/signup",
     method: "post",
-    body: {
-      email,
-      password,
-    },
+    body: { email, password },
     onSuccess: () => Router.push("/"),
   });
+
   const onSubmit = async (e) => {
     e.preventDefault();
-
     await doRequest();
   };
+
   return (
-    <form onSubmit={onSubmit}>
-      <h1>Sign Up</h1>
-      <div className="form-group">
-        <label htmlFor="exampleInputEmail1">Email address</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="form-control"
-          id="exampleInputEmail1"
-          placeholder="Enter email"
-        />
+    <div className="d-flex justify-content-center align-items-center min-vh-100">
+      <div className="card shadow p-4" style={{ width: "400px" }}>
+        
+        <h2 className="text-center mb-4">Create Account</h2>
+
+        <form onSubmit={onSubmit}>
+          <div className="mb-3">
+            <label className="form-label">Email address</label>
+
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Password</label>
+
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          {errors && <div className="mb-3">{errors}</div>}
+
+          <button className="btn btn-primary w-100" type="submit">
+            Sign Up
+          </button>
+        </form>
+
+        <p className="text-center mt-3 mb-0">
+          Already have an account?{" "}
+          <Link href="/auth/signin">Sign In</Link>
+        </p>
       </div>
-      <div className="form-group">
-        <label htmlFor="exampleInputPassword1">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          id="exampleInputPassword1"
-          placeholder="Password"
-          className="form-control"
-        />
-      </div>
-      <button type="submit" className="btn btn-primary">
-      Sign Up
-      </button>
-      {errors}
-    </form>
+    </div>
   );
 };
 
-export default signup;
+export default Signup;
