@@ -1,38 +1,50 @@
 import Link from "next/link";
 
-export default ({ currentUser }) => {
-  const options = [
-    !currentUser && { label: "Sign Up", href: "/auth/signup" }, //false case user sign in
-    !currentUser && { label: "Sign In", href: "/auth/signin" }, //false case user sign in
-    currentUser && { label: `Sell Tickets`, href: "/tickets/new" },
-    currentUser && { label: `My Orders`, href: "/orders" },
-    currentUser && { label: "Sign Out", href: "/auth/signout" }, //exp null case user is not signed in
-  ];
-  const links = options
-    .filter((linkConfig) => linkConfig)
-    .map(({ label, href }) => {
-      return (
-        <li key={href} className="nav-item">
-          <Link href={href} style={{ textDecoration: "none" }}>
-            <div className="nav-link ">{label}</div>
-          </Link>
-        </li>
-      );
-    });
-
+const Header = ({ currentUser }) => {
   return (
-    <nav
-      className="navbar navbar-expand-lg bg-dark fs-2"
-      data-bs-theme="dark"
-    >
-      <div class="container-fluid">
-        <Link href="/" style={{ textDecoration: "none" }}>
-          <div className="navbar-brand">SRayen</div>
-        </Link>
-        <div className="d-flex justify-content-end">
-          <ul className="nav d-flex align-items-center">{links}</ul>
-        </div>
+    <nav className="navbar navbar-light bg-light px-4">
+      
+      {/* Logo */}
+      <Link href="/" className="navbar-brand">
+        Ticketing
+      </Link>
+
+      {/* Right Side */}
+      <div className="d-flex align-items-center gap-3">
+
+        {currentUser && (
+          <span className="text-muted">
+            {currentUser.email}
+          </span>
+        )}
+
+        {!currentUser && (
+          <>
+            <Link href="/auth/signup" className="btn btn-outline-primary">
+              Sign Up
+            </Link>
+
+            <Link href="/auth/signin" className="btn btn-primary">
+              Sign In
+            </Link>
+          </>
+        )}
+
+        {currentUser && (
+          <>
+            <Link href="/tickets/new" className="btn btn-success">
+              Create Ticket
+            </Link>
+
+            <Link href="/auth/signout" className="btn btn-outline-danger">
+              Sign Out
+            </Link>
+          </>
+        )}
+
       </div>
     </nav>
   );
 };
+
+export default Header;
