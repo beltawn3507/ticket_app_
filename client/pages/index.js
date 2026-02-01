@@ -2,56 +2,74 @@ import Link from "next/link";
 
 const LandingPage = ({ currentUser, tickets }) => {
 
-  // If NOT logged in
+  // LOGGED OUT
   if (!currentUser) {
     return (
-      <div className="text-center mt-5">
-        <h1 className="display-4">Welcome to Ticketing</h1>
-        <p className="lead">Buy and sell tickets easily</p>
+      <div className="text-center py-5">
+
+        <h1 className="display-5 fw-bold">
+          Buy & Sell Tickets Easily
+        </h1>
+
+        <p className="lead text-muted">
+          Secure ticket marketplace built for everyone
+        </p>
 
         <div className="d-flex justify-content-center gap-3 mt-4">
           <Link href="/auth/signup" className="btn btn-primary btn-lg">
-            Sign Up
+            Get Started
           </Link>
 
-          <Link href="/auth/signin" className="btn btn-outline-primary btn-lg">
+          <Link href="/auth/signin" className="btn btn-outline-secondary btn-lg">
             Sign In
           </Link>
         </div>
+
       </div>
     );
   }
 
-  // If logged in → show tickets
-  const ticketList = tickets.map((ticket) => {
-    return (
-      <tr key={ticket.id}>
-        <td>{ticket.title}</td>
-        <td>{ticket.price}</td>
-        <td>
-          <Link href={`/tickets/${ticket.id}`} className="btn btn-sm btn-info">
-            View
-          </Link>
-        </td>
-      </tr>
-    );
-  });
-
+  // LOGGED IN
   return (
     <div>
-      <h2 className="text-center my-4">Available Tickets</h2>
 
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Link</th>
-          </tr>
-        </thead>
+      <h2 className="text-center mb-4 fw-semibold">
+        Available Tickets
+      </h2>
 
-        <tbody>{ticketList}</tbody>
-      </table>
+      <div className="row g-4">
+
+        {tickets.map(ticket => (
+          <div key={ticket.id} className="col-md-6 col-lg-4">
+
+            <div className="card border-0 shadow-sm ticket-card h-100">
+
+              <div className="card-body d-flex flex-column">
+
+                <h5 className="fw-semibold mb-2">
+                  {ticket.title}
+                </h5>
+
+                <p className="text-muted mb-4">
+                  ₹ {ticket.price}
+                </p>
+
+                <Link
+                  href={`/tickets/${ticket.id}`}
+                  className="btn btn-primary mt-auto"
+                >
+                  View Ticket
+                </Link>
+
+              </div>
+
+            </div>
+
+          </div>
+        ))}
+
+      </div>
+
     </div>
   );
 };

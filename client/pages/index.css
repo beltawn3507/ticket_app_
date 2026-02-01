@@ -1,1 +1,29 @@
-@import "~/node_modules/bootswatch/dist/morph/bootstrap.min.css"
+@import "~/node_modules/bootswatch/dist/morph/bootstrap.min.css";
+
+/* ---------- GLOBAL BACKGROUND ---------- */
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #eef3f9, #dde7f5);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- PAGE CONTAINER ---------- */
+.page-wrapper {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  min-height: 75vh;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- TICKET CARDS ---------- */
+.ticket-card {
+  border-radius: 14px;
+  transition: all 0.25s ease;
+}
+
+.ticket-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+}
