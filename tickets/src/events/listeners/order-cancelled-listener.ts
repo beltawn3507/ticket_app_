@@ -15,16 +15,25 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
       throw new Error('Ticket not found');
     }
 
-    // this orderId makes sure we know wether ticket is unlocked or not
-    ticket.set({ orderId: undefined });
+    const quantity = data.quantity;
+
+    ticket.set({
+      reservedQuantity:Math.max(
+        ticket.reservedQuantity-quantity,
+        0
+      )
+    })
 
     await ticket.save();
+
     await new TicketUpadatedPublisher(this.client).publish({
       id: ticket.id,
-      orderId: ticket.orderId,
-      userId: ticket.userId,
-      price: ticket.price,
       title: ticket.title,
+      description: ticket.description,
+      price: ticket.price,
+      totalQuantity: ticket.totalQuantity,
+      reservedQuantity: ticket.reservedQuantity,
+      userId: ticket.userId,
       version: ticket.version,
     });
 

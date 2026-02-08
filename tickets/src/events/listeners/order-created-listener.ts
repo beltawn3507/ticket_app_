@@ -16,7 +16,13 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       throw new Error('Ticket not found');
     }
 
-    ticket.set({ orderId: data.id });
+    const quantity = data.quantity;
+
+    if(ticket.reservedQuantity + quantity > ticket.totalQuantity){
+      throw new Error('Not Enough Tickets available')
+    }
+
+    ticket.set({ reservedQuantity: ticket.reservedQuantity + quantity, });
 
     await ticket.save();
     await new TicketUpadatedPublisher(this.client).publish({
@@ -24,7 +30,9 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       price: ticket.price,
       title: ticket.title,
       userId: ticket.userId,
-      orderId: ticket.orderId,
+      description: ticket.description,
+      totalQuantity: ticket.totalQuantity,
+      reservedQuantity: ticket.reservedQuantity,
       version: ticket.version,
     });
 
