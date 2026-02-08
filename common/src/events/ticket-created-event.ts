@@ -5,8 +5,10 @@ export interface TicketCreatedEvent{
     data:{
         id:string;
         version: number;
+        description:string;
         title:string;
         price:number;
+        totalQuantity: number;
         userId:string;
     };
 }
