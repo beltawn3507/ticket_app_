@@ -12,17 +12,28 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     const ticket = await Ticket.findById(data.ticket.id);
 
     if (!ticket) {
-      throw new Error('Ticket not found');
+      msg.ack();
+      return;
     }
 
-    const quantity = data.quantity;
+    const reservationIndex = ticket.reservations.findIndex(
+      (r) => r.orderId === data.id
+    );
+
+    if (reservationIndex === -1) {
+      msg.ack();
+      return;
+    }
+
+    const reservation = ticket.reservations[reservationIndex];
 
     ticket.set({
-      reservedQuantity:Math.max(
-        ticket.reservedQuantity-quantity,
-        0
-      )
-    })
+      reservedQuantity:
+        ticket.reservedQuantity - reservation.quantity,
+    });
+
+    
+    ticket.reservations.splice(reservationIndex, 1);
 
     await ticket.save();
 

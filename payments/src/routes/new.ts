@@ -29,16 +29,26 @@ router.post(
     if (!order) {
       throw new NotFoundError();
     }
+
     if (order.userId !== req.currentUser!.id) {
       throw new NotAuthorisedError();
     }
-    if (order.status === OrderStatus.Cancelled) {
-      throw new BadRequesterror('Cannot pay for an cancelled order');
+    if (order.status !== OrderStatus.AwaitingPayment) {
+      throw new BadRequesterror('Order not payable');
     }
+
+    const existingPayment = await Payment.findOne({ orderId });
+
+    if (existingPayment) {
+      return res.status(200).send({
+        id: existingPayment.id,
+      });
+    }
+    
 
     const charge = await stripe.charges.create({
       currency: 'usd',
-      amount: order.price * 100,
+      amount: order.totalAmount() * 100,
       source: token,
     });
     const payment = Payment.build({

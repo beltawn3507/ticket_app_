@@ -19,9 +19,14 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
       throw new Error('Order not found');
     }
 
+    if(order.status === OrderStatus.Cancelled){
+      return msg.ack();
+    }
+
     order.set({
       status: OrderStatus.Complete,
     });
+    
     await order.save();
 
     msg.ack();

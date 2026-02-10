@@ -5,6 +5,8 @@ import { TicketCreatedListener } from "./events/listeners/ticket-created-listene
 import { TicketUpdatedListener } from "./events/listeners/ticket-updated-listener";
 import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
 import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
+import { TicketsReservedListener } from "./events/listeners/ticket-reserved-listener";
+import { TicketsReservationFailedListener } from "./events/listeners/ticket-reserve-failed";
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -45,6 +47,9 @@ const start = async () => {
     // payment completed litener 
     new PaymentCreatedListener(natsWrapper.client).listen();
 
+    new TicketsReservedListener(natsWrapper.client).listen();
+
+    new TicketsReservationFailedListener(natsWrapper.client).listen();
     // mongoose 
     await mongoose.connect(process.env.MONGO_URI);
     console.log("Connected to mongo-db", process.env.MONGO_URI);

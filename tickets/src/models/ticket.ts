@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
+interface Reservation {
+  orderId: string;
+  quantity: number;
+}
 
 interface TicketAttrs{
     title: string;
@@ -17,6 +21,7 @@ interface TicketDoc extends mongoose.Document {
     description:string;
     totalQuantity:number;
     reservedQuantity:number;
+    reservations: Reservation[];
     id: string;
     version:number;
 }
@@ -50,6 +55,12 @@ const ticketSchema = new mongoose.Schema({
       required: true,
       default: 0,
     },
+    reservations: [
+      {
+        orderId: { type: String, required: true },
+        quantity: { type: Number, required: true },
+      },
+    ],
     userId:{
         type:String,
         required:true

@@ -17,7 +17,7 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
     console.log("expiration completed message received in order srv")
 
-    const order = await Order.findById(data.orderId).populate('ticket');
+    const order = await Order.findById(data.orderId);
 
     if (!order) {
       throw new Error('Order not found');
@@ -36,8 +36,9 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
       id: order.id,
       version: order.version,
       ticket: {
-        id: order.ticket.id,
+        id: order.ticket.id.toString(),
       },
+      quantity:order.quantity
     });
 
     msg.ack();

@@ -14,23 +14,21 @@ router.post('/api/orders',requireAuth,
        body('ticketId')
         .not()
         .isEmpty()
-        .withMessage('TicketId must be provided')
+        .withMessage('TicketId must be provided'),
+       body('quantity')
+        .isInt({ gt: 0 })
+        .withMessage('Quantity must be greater than 0'),
     ],validateRequest,
     async(req:Request,res:Response)=>{
 
-    const {ticketId} = req.body;
+    const {ticketId,quantity} = req.body;
     // find the ticket the user is trying to order from db
         const ticket = await Ticket.findById(ticketId);
         if(!ticket){
             throw new NotFoundError();
         }
 
-    // prebuilt mongo model method to find if the ticket is reserved or not 
-    // we are defining the method in mongo model
-    const isReserved = await ticket.isReserved();
-    if(isReserved){
-        throw new BadRequesterror('Ticket is already reserved');
-    }
+   
 
     // calculate the expiration date for this order
     const expiration = new Date();
@@ -41,19 +39,22 @@ router.post('/api/orders',requireAuth,
             userId:req.currentUser!.id,
             status: OrderStatus.Created,
             expiresAt: expiration,
-            ticket
+            ticket,
+            quantity,
+            priceatPurchase:ticket.price
         });
 
         await order.save();
     // publish and event sayin that the order is created
         new OrderCreatedPublisher(natsWrapper.client).publish({
             id: order.id,
-            version:order.version,
+            version: order.version,
             status: order.status,
             userId: order.userId,
             expiresAt: order.expiresAt.toISOString(),
+            quantity: order.quantity,
             ticket:{
-                id:ticket.id,
+                id:ticket.id.toString(),
                 price:ticket.price
             }
         });

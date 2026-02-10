@@ -5,9 +5,6 @@ import { Order } from "../../models/order";
 
 
 
-
-
-
 export class OrderCancelledListener extends Listener<OrderCancelledEvent>{
     // this is the name of the subject queue
     subject:Subjects.OrderCancelled = Subjects.OrderCancelled;

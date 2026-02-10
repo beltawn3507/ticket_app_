@@ -20,6 +20,13 @@ router.delete('/api/orders/:orderId',requireAuth,async(req:Request,res:Response)
         throw new NotAuthorisedError();
     }
 
+    if (
+      order.status === OrderStatus.Cancelled ||
+      order.status === OrderStatus.Complete
+    ) {
+      return res.status(204).send(order);
+    }
+
     order.status = OrderStatus.Cancelled;
     await order.save();
 
@@ -28,8 +35,9 @@ router.delete('/api/orders/:orderId',requireAuth,async(req:Request,res:Response)
         id:order.id,
         version:order.version,
         ticket:{
-           id:  order.ticket.id
-        }
+           id:  order.ticket.id.toString()
+        },
+        quantity: order.quantity
     })
 
 
