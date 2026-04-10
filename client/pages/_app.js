@@ -4,14 +4,14 @@ import Header from "../components/header";
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
-    <div>
-
+    <div className="app-shell">
       <Header currentUser={currentUser} />
 
-      <div className="container mt-4 page-wrapper">
-        <Component currentUser={currentUser} {...pageProps} />
-      </div>
-
+      <main className="app-shell__content">
+        <div className="container">
+          <Component currentUser={currentUser} {...pageProps} />
+        </div>
+      </main>
     </div>
   );
 };

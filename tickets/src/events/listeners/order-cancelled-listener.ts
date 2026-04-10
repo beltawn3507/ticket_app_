@@ -16,7 +16,7 @@ export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
     }
 
     // this orderId makes sure we know wether ticket is unlocked or not
-    ticket.set({ orderId: undefined });
+    ticket.set({ orderId: undefined, isSold: false });
 
     await ticket.save();
     await new TicketUpadatedPublisher(this.client).publish({

@@ -16,7 +16,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
       throw new Error('Ticket not found');
     }
 
-    ticket.set({ orderId: data.id });
+    ticket.set({ orderId: data.id, isSold: false });
 
     await ticket.save();
     await new TicketUpadatedPublisher(this.client).publish({

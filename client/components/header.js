@@ -1,77 +1,66 @@
 import Link from "next/link";
 
 const Header = ({ currentUser }) => {
+  const isSignedIn = Boolean(currentUser);
+
   return (
-    <nav className="navbar navbar-expand-lg bg-white border-bottom shadow-sm px-4 py-2">
+    <header className="site-header">
+      <div className="site-header__inner">
+        <Link href="/" className="brand-mark">
+          <span className="brand-mark__badge">T</span>
+          <span>
+            <strong>TicketHub</strong>
+            <small>Live marketplace</small>
+          </span>
+        </Link>
 
-      {/* Left - Brand */}
-      <Link 
-        href="/" 
-        className="navbar-brand fw-bold fs-4 text-primary"
-      >
-        🎟 Ticketing
-      </Link>
+        <nav className="nav-links">
+          <Link href="/" className="nav-link-chip">
+            Explore Tickets
+          </Link>
 
-      {/* Right */}
-      <div className="ms-auto d-flex align-items-center gap-3">
+          {!isSignedIn && (
+            <>
+              <Link href="/auth/signin" className="nav-link-chip">
+                Login
+              </Link>
+              <Link href="/auth/signup" className="nav-link-chip nav-link-chip--primary">
+                Sign Up
+              </Link>
+            </>
+          )}
 
-        {/* User Email */}
-        {currentUser && (
-          <div className="d-flex align-items-center gap-2">
-            <div 
-              className="rounded-circle bg-primary text-white d-flex 
-                         align-items-center justify-content-center"
-              style={{ width: 36, height: 36 }}
-            >
+          {isSignedIn && (
+            <>
+              <Link href="/my-tickets" className="nav-link-chip">
+                My Tickets
+              </Link>
+              <Link href="/orders" className="nav-link-chip">
+                My Orders
+              </Link>
+              <Link href="/tickets/new" className="nav-link-chip nav-link-chip--primary">
+                Create Ticket
+              </Link>
+              <Link href="/auth/signout" className="nav-link-chip nav-link-chip--danger">
+                Sign Out
+              </Link>
+            </>
+          )}
+        </nav>
+
+        {isSignedIn && (
+          <div className="user-pill">
+            <span className="user-pill__avatar">
               {currentUser.email[0].toUpperCase()}
-            </div>
-
-            <span className="text-muted small">
-              {currentUser.email}
             </span>
+            <div>
+              <small>Signed in as</small>
+              <strong>{currentUser.email}</strong>
+            </div>
           </div>
         )}
-
-        {/* Auth Buttons */}
-        {!currentUser && (
-          <>
-            <Link 
-              href="/auth/signin" 
-              className="btn btn-outline-secondary px-4"
-            >
-              Sign In
-            </Link>
-
-            <Link 
-              href="/auth/signup" 
-              className="btn btn-primary px-4"
-            >
-              Sign Up
-            </Link>
-          </>
-        )}
-
-        {/* Logged In Buttons */}
-        {currentUser && (
-          <>
-            <Link 
-              href="/tickets/new" 
-              className="btn btn-primary px-4"
-            >
-              + Create Ticket
-            </Link>
-
-            <Link 
-              href="/auth/signout" 
-              className="btn btn-outline-danger px-4"
-            >
-              Sign Out
-            </Link>
-          </>
-        )}
-
       </div>
-    </nav>
+    </header>
   );
 };
 

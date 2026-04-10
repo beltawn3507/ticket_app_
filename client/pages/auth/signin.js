@@ -1,7 +1,9 @@
-import React, { useState } from "react";
-import useRequest from "../../hooks/use-request";
-import Router from "next/router";
+import { useState } from "react";
 import Link from "next/link";
+import Router from "next/router";
+import useRequest from "../../hooks/use-request";
+import ErrorList from "../../components/error-list";
+import AuthLayout from "../../components/auth-layout";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
@@ -14,91 +16,56 @@ const Signin = () => {
     onSuccess: () => Router.push("/"),
   });
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (event) => {
+    event.preventDefault();
     await doRequest();
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <AuthLayout
+      mode="signin"
+      title="Sign in to manage tickets and orders"
+      subtitle="Jump back into your dashboard to monitor listings, place orders, and keep checkout moving."
+    >
+      <form onSubmit={onSubmit}>
+        <div className="mb-3">
+          <label className="field-label">Email address</label>
+          <input
+            type="email"
+            className="form-control form-control-lg"
+            placeholder="you@example.com"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+        </div>
 
-      <div
-        className="card border-0 shadow-lg p-4"
-        style={{ width: "420px", borderRadius: "14px" }}
-      >
+        <div className="mb-3">
+          <label className="field-label">Password</label>
+          <input
+            type="password"
+            className="form-control form-control-lg"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+        </div>
 
-        {/* Brand */}
-        <h1 className="text-center fw-bold mb-1 text-primary">
-          🎟 Ticketing
-        </h1>
+        <button className="btn btn-primary btn-lg w-100 mt-3" type="submit">
+          Sign in
+        </button>
 
-        <p className="text-center text-muted mb-4">
-          Sign in to your account
-        </p>
+        <ErrorList errors={errors} />
+      </form>
 
-        <form onSubmit={onSubmit}>
-
-          {/* Email */}
-          <div className="mb-3">
-            <label className="form-label small text-muted">
-              Email
-            </label>
-
-            <input
-              type="email"
-              className="form-control form-control-lg"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Password */}
-          <div className="mb-4">
-            <label className="form-label small text-muted">
-              Password
-            </label>
-
-            <input
-              type="password"
-              className="form-control form-control-lg"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          {/* Errors */}
-          {errors && (
-            <div className="alert alert-danger py-2">
-              {errors}
-            </div>
-          )}
-
-          {/* Button */}
-          <button
-            className="btn btn-primary w-100 py-2 fw-semibold"
-            type="submit"
-          >
-            Sign In
-          </button>
-        </form>
-
-        {/* Footer */}
-        <p className="text-center mt-4 mb-0 text-muted">
-          Don’t have an account?{" "}
-          <Link
-            href="/auth/signup"
-            className="text-decoration-none fw-semibold"
-          >
-            Sign Up
-          </Link>
-        </p>
-
-      </div>
-    </div>
+      <p className="mt-4 mb-0 muted-copy">
+        Need an account?{" "}
+        <Link href="/auth/signup" className="fw-semibold text-primary">
+          Create one
+        </Link>
+      </p>
+    </AuthLayout>
   );
 };
 
